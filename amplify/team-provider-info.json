@@ -10,6 +10,20 @@
       "StackName": "amplify-imageuploadfrontend-dev-105218",
       "StackId": "arn:aws:cloudformation:us-east-1:771830474512:stack/amplify-imageuploadfrontend-dev-105218/25ca2780-43f4-11ed-aa5e-126828afecc1",
       "AmplifyAppId": "d11n3a1ex02lf6"
+    },
+    "categories": {
+      "hosting": {
+        "amplifyhosting": {
+          "appId": "d11n3a1ex02lf6",
+          "type": "manual"
+        }
+      },
+      "function": {
+        "getPresignedUrl": {}
+      },
+      "api": {
+        "imageuploadfrontend": {}
+      }
     }
   }
 }
