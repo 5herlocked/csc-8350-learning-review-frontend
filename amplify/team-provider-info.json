@@ -12,17 +12,17 @@
       "AmplifyAppId": "d11n3a1ex02lf6"
     },
     "categories": {
+      "function": {
+        "getPresignedUrl": {
+          "deploymentBucketName": "amplify-imageuploadfrontend-dev-105218-deployment",
+          "s3Key": "amplify-builds/getPresignedUrl-6b4a653473356c564c6d-build.zip"
+        }
+      },
       "hosting": {
         "amplifyhosting": {
           "appId": "d11n3a1ex02lf6",
           "type": "manual"
         }
-      },
-      "function": {
-        "getPresignedUrl": {}
-      },
-      "api": {
-        "imageuploadfrontend": {}
       }
     }
   }
