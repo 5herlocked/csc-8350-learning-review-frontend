@@ -23,6 +23,9 @@
           "appId": "d11n3a1ex02lf6",
           "type": "manual"
         }
+      },
+      "api": {
+        "imageuploadfrontend": {}
       }
     }
   }
