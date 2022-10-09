@@ -1,6 +1,6 @@
 import json
 import boto3
-from botocore.exceptions import *
+from botocore.exceptions import ClientError
 
 
 """
@@ -25,7 +25,7 @@ def get_presigned_url(bucket_name, object_key):
 
         return json.dumps(response)
     except ClientError as e:
-        logging.error(e)
+        print(e)
         return json.dumps(response)
     pass
 
