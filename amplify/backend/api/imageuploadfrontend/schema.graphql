@@ -4,5 +4,4 @@ input AMPLIFY { globalAuthRule: AuthRule = { allow: public } } # FOR TESTING ONL
 
 type Query {
    getPresignedUrl(bucket_name: String, object_key: String): String @function(name: "getPresignedUrl-${env}")
-   
 }
