@@ -1,32 +1,59 @@
 import './App.css';
+import axios from 'axios';
 import {useState} from "react";
-import { Amplify, API, graphqlOperation } from 'aws-amplify';
+import {Amplify} from "aws-amplify";
 import awsconfig from './aws-exports';
-import {getPresignedUrl} from "./graphql/queries";
+import * as queries from './graphql/queries';
+import { API, graphqlOperation } from 'aws-amplify';
 
 Amplify.configure(awsconfig);
 function App() {
   const [uploadUrl, setUploadUrl] = useState("");
+  const [fileSelectionError, setFileSelectionError] = useState("");
   const [selectedFile, setSelectedFile] = useState();
   const [isFilePicked, setIsFilePicked] = useState(false);
 
   async function onFileChanged(event) {
-    setSelectedFile(event.target.files[0]);
     console.log(event.target.files[0]);
-    const uploadUrl = await API.graphql(graphqlOperation(getPresignedUrl,
+    const fileObj = event.target.files && event.target.files[0];
+
+    if (!fileObj) return;
+
+    const [type] = fileObj.type.split('/');
+
+    if (!type || type !== 'image') {
+      setFileSelectionError("You can only upload image files");
+      return;
+    }
+    
+    const uploadUrl = await API.graphql(graphqlOperation(queries.getPresignedUrl,
       {
         input: {
           bucket_name: '',
-          object_key: ''
-      }}
+          object_key: '',
+        }
+      }
     ));
     console.log(uploadUrl.data.getPresignedUrl);
+
     setUploadUrl(uploadUrl.data.getPresignedUrl);
+    setSelectedFile(event);
     setIsFilePicked(true);
+    setFileSelectionError("");
   }
 
-  const handleSubmission = () => {
+  async function handleSubmission() {
+    const fileEvent = selectedFile.target.files && selectedFile.target.files[0];
 
+    const _ = new FormData();
+
+    _.append('Content-Type', fileEvent.type.split('/'));
+
+    _.append('file', fileEvent);
+
+    const response = await axios.post(uploadUrl, _, {
+      headers: {'Content-Type': 'multipart/form-data'},
+    });
   }
 
   return (
@@ -45,7 +72,7 @@ function App() {
             </p>
           </div>
         ) : (
-          <p>Select a file to see the details</p>
+          <p>{ fileSelectionError }</p>
         )
         }
         <button onClick={handleSubmission}>Submit</button>
