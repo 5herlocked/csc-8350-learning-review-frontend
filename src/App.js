@@ -28,12 +28,10 @@ function App() {
     }
     
     const uploadUrl = await API.graphql(graphqlOperation(queries.getPresignedUrl,
-      {
-        input: {
+        {
           bucket_name: 's3-lambda-rekognition-source-bucket',
           object_key: fileObj.name,
         }
-      }
     ));
     console.log(uploadUrl.data.getPresignedUrl);
 
@@ -46,15 +44,32 @@ function App() {
   async function handleSubmission() {
     const fileEvent = selectedFile.target.files && selectedFile.target.files[0];
 
-    const _ = new FormData();
+    const formData = new FormData();
 
-    _.append('Content-Type', fileEvent.type.split('/'));
+    formData.append('Content-Type', fileEvent.type.split('/'));
 
-    _.append('file', fileEvent);
+    formData.append('file', fileEvent);
 
-    const response = await axios.post(uploadUrl, _, {
-      headers: {'Content-Type': 'multipart/form-data'},
-    });
+    const response = await fetch(
+        (uploadUrl + "/"),
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          },
+          body: formData
+        }
+    );
+
+    console.log(response);
+
+    // const response = await axios.postForm((uploadUrl + '/'), formData, {
+    //   headers: {'Content-Type': 'multipart/form-data'},
+    // });
+
+    setIsFilePicked(false);
+    setSelectedFile(undefined);
+    setUploadUrl("");
   }
 
   return (
@@ -65,18 +80,12 @@ function App() {
         {isFilePicked ? (
           <div>
             <p>Filename: {selectedFile.name}</p>
-            <p>Filetype: {selectedFile.type}</p>
-            <p>Size in bytes: {selectedFile.size}</p>
-            <p>
-              lastModifiedDate:{' '}
-              {selectedFile.lastModifiedDate.toLocaleDateString()}
-            </p>
           </div>
         ) : (
           <p>{ fileSelectionError }</p>
         )
         }
-        <button onClick={handleSubmission}>Submit</button>
+        { isFilePicked && <button  onClick={handleSubmission}>Submit</button>}
       </header>
     </div>
   );

@@ -31,7 +31,7 @@ def get_presigned_url(bucket_name, object_key):
 
 
 def handler(event, context):
-    print(event)
+    event = event["arguments"]
     bucket_name = event["bucket_name"]
     object_key = event["object_key"]
 
