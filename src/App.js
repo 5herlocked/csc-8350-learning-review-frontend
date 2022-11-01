@@ -3,7 +3,7 @@ import axios from 'axios';
 import {useState} from "react";
 import {Amplify} from "aws-amplify";
 import awsconfig from './aws-exports';
-import * as queries from './graphql/queries';
+import * as queries from './graphql/queries.ts';
 import { API, graphqlOperation } from 'aws-amplify';
 
 Amplify.configure(awsconfig);
@@ -17,6 +17,7 @@ function App() {
     console.log(event.target.files[0]);
     const fileObj = event.target.files && event.target.files[0];
 
+    console.log(fileObj);
     if (!fileObj) return;
 
     const [type] = fileObj.type.split('/');
@@ -29,8 +30,8 @@ function App() {
     const uploadUrl = await API.graphql(graphqlOperation(queries.getPresignedUrl,
       {
         input: {
-          bucket_name: '',
-          object_key: '',
+          bucket_name: 's3-lambda-rekognition-source-bucket',
+          object_key: fileObj.name,
         }
       }
     ));
