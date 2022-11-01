@@ -3,7 +3,7 @@ import axios from 'axios';
 import {useState} from "react";
 import {Amplify} from "aws-amplify";
 import awsconfig from './aws-exports';
-import * as queries from './graphql/queries.ts';
+import * as queries from './graphql/queries';
 import { API, graphqlOperation } from 'aws-amplify';
 
 Amplify.configure(awsconfig);
