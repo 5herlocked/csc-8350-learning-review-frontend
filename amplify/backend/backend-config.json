@@ -24,12 +24,5 @@
       "type": "manual"
     }
   },
-  "function": {
-    "getPresignedUrl": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda",
-      "dependsOn": []
-    }
-  }
+  "function": {}
 }
