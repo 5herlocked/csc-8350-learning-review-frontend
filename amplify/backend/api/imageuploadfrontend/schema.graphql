@@ -9,5 +9,5 @@ type IdentifiedImage @model {
 }
 
 type Query {
-   getPresignedUrl(bucket_name: String, object_key: String): String @function(name: "getPresignedUrl-${env}")
+   getPresignedUrl(bucket_name: String, object_key: String, file_type: String): String @function(name: "getPresignedUrl-${env}")
 }

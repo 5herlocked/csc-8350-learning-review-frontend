@@ -10,7 +10,7 @@ Available variables in the lambda function
 """
 
 
-def get_presigned_url(bucket_name, object_key):
+def get_presigned_url(bucket_name, object_key, file_type):
     s3_client = boto3.client('s3')
 
     try:
@@ -18,15 +18,22 @@ def get_presigned_url(bucket_name, object_key):
             'put_object',
             Params={
                 'Bucket': bucket_name,
-                'Key': object_key
+                'Key': object_key,
             },
-            ExpiresIn=3600
+            ExpiresIn=360,
+            HttpMethod='PUT'
         )
 
-        return json.dumps(response)
+        return json.dumps({
+            'statusCode': "200",
+            'presignedUrl': response,
+        })
     except ClientError as e:
         logging.error(e)
-        return json.dumps(response)
+        return json.dumps({
+            'statusCode': "500",
+            'error': json.dumps(response),
+        })
     pass
 
 
@@ -34,5 +41,6 @@ def handler(event, context):
     event = event["arguments"]
     bucket_name = event["bucket_name"]
     object_key = event["object_key"]
+    file_type = event["file_type"]
 
-    return get_presigned_url(bucket_name, object_key)
+    return get_presigned_url(bucket_name, object_key, file_type)

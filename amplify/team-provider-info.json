@@ -15,7 +15,7 @@
       "function": {
         "getPresignedUrl": {
           "deploymentBucketName": "amplify-imageuploadfrontend-dev-105218-deployment",
-          "s3Key": "amplify-builds/getPresignedUrl-7539432f6c5a51636f4a-build.zip"
+          "s3Key": "amplify-builds/getPresignedUrl-684845656b455052677a-build.zip"
         }
       },
       "hosting": {
